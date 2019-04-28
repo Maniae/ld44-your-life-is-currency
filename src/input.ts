@@ -1,4 +1,6 @@
 export class Input {
+	static onKeyPressed: (() => void) | null = null;
+
 	private static _pressedKeys = new Map<string, boolean>();
 	private static _justPressedKeys = new Map<string, boolean>();
 
@@ -21,6 +23,7 @@ export class Input {
 		document.addEventListener("keydown", e => {
 			Input._justPressedKeys.set(e.key, true);
 			Input._pressedKeys.set(e.key, true);
+			Input.onKeyPressed && Input.onKeyPressed();
 		});
 		document.addEventListener("keypress", e => {
 			Input._justPressedKeys.set(e.key, false);
@@ -30,6 +33,7 @@ export class Input {
 			Input._pressedKeys.set(e.key, false);
 		});
 		document.addEventListener("mousedown", e => {
+			Input.onKeyPressed && Input.onKeyPressed();
 			if (e.button === 0) {
 				Input._justPressedKeys.set(Input.MouseLeft, true);
 				Input._pressedKeys.set(Input.MouseLeft, true);

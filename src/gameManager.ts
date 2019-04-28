@@ -1,11 +1,12 @@
 import bankerSprite from "../assets/banker.png";
+import bossSprite from "../assets/boss.png";
 import crosserSprite from "../assets/crosser.png";
 import crosserDeathSound from "../assets/crosserDeath.wav";
 import crosserDiagSprite from "../assets/crosserDiag.png";
 import crosserDiagDeathSound from "../assets/crosserDiagDeath.wav";
 import ennemyFireSprite from "../assets/ennemyFire.png";
-import backgroundSprite from "../assets/ground3.png";
 import floorSprite from "../assets/ground2.png";
+import backgroundSprite from "../assets/ground3.png";
 import heartSprite from "../assets/heart.png";
 import heartSound from "../assets/heart.wav";
 import heartMissingSprite from "../assets/heartMissing.png";
@@ -13,23 +14,21 @@ import fullHeartSprite from "../assets/heartOver.png";
 import hitSound from "../assets/hit.wav";
 import playerSprite from "../assets/player.png";
 import playerFireSprite from "../assets/playerFire.png";
-import bossSprite from "../assets/boss.png";
 import purchaseSound from "../assets/purchase.wav";
 import stealSound from "../assets/steal.wav";
-import theme from "../assets/themex4.mp3";
 import {
 	BANKER_TILE_X,
 	BANKER_TILE_Y,
 	HEIGHT,
+	INVULNERABILITY_DELAY,
 	MIN_BANKER_STEAL,
+	PLAYER_FRAME_UPDATE,
+	RESTART_DELAY,
+	ROOMS_GROUP_NUMBER,
+	SHOP_SIZE,
+	SPEED_EPSILON,
 	TILE_SIZE,
 	WIDTH,
-	INVULNERABILITY_DELAY,
-	ROOMS_GROUP_NUMBER,
-	RESTART_DELAY,
-	SHOP_SIZE,
-	PLAYER_FRAME_UPDATE,
-	SPEED_EPSILON,
 } from "./config/constants";
 import { Level } from "./domain/level";
 import { Banker } from "./entities/banker";
@@ -40,7 +39,22 @@ import { Product } from "./entities/product";
 import { Projectile } from "./entities/projectile";
 import { Wall } from "./entities/wall";
 import { Input } from "./input";
-import { circleIntersectRect, norm, Point, pointInRect, rectIntersectRect, vect, normalize } from "./math";
+import { circleIntersectRect, norm, normalize, Point, pointInRect, rectIntersectRect, vect } from "./math";
+
+const images = [
+	bankerSprite,
+	bossSprite,
+	crosserSprite,
+	crosserDiagSprite,
+	ennemyFireSprite,
+	floorSprite,
+	backgroundSprite,
+	heartSprite,
+	heartMissingSprite,
+	fullHeartSprite,
+	playerSprite,
+	playerFireSprite,
+];
 
 const stealAudio = new Audio(stealSound);
 const crosserDeathAudio = new Audio(crosserDeathSound);
@@ -48,8 +62,6 @@ const crosserDiagDeathAudio = new Audio(crosserDiagDeathSound);
 const hitAudio = new Audio(hitSound);
 const heartAudio = new Audio(heartSound);
 const purchaseAudio = new Audio(purchaseSound);
-
-const music = new Audio(theme);
 
 export class GameManager {
 	music: HTMLAudioElement | null = null;
@@ -94,6 +106,10 @@ export class GameManager {
 	gameOverText: PIXI.Text;
 
 	constructor(private readonly app: PIXI.Application) {
+		images.forEach(i => {
+			// Ugly preload, out of time
+			PIXI.Sprite.fromImage(i);
+		});
 		const backgroundTexture = PIXI.Texture.fromImage(backgroundSprite);
 		this.backgroundGraphic = new PIXI.extras.TilingSprite(backgroundTexture, 768 + WIDTH, 768 + HEIGHT);
 		this.backgroundGraphic.clampMargin = 32;
@@ -148,7 +164,7 @@ export class GameManager {
 				"to give it back...",
 			() => {
 				setTimeout(() => {
-					this.type("With interests...", () => {
+					this.type("With interest...", () => {
 						setTimeout(() => {
 							this.app.stage.removeChild(this.infosGraphics);
 							this.tutorial = false;
@@ -157,8 +173,6 @@ export class GameManager {
 				}, 2500);
 			}
 		);
-
-		this.playMusic();
 	}
 
 	restart() {
@@ -171,12 +185,6 @@ export class GameManager {
 		this.gameOverText.text = "";
 		this.projectiles = new Set([]);
 		this.startShop();
-	}
-
-	playMusic() {
-		music.loop = true;
-		music.volume = 0.1;
-		music.play();
 	}
 
 	startShop() {
