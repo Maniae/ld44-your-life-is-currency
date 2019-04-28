@@ -21,6 +21,10 @@ export class Input {
 
 	static init() {
 		document.addEventListener("keydown", e => {
+			// Prevent itch io scrolling
+			if (e.keyCode == 32 || e.keyCode == 37 || e.keyCode == 38 || e.keyCode == 39 || e.keyCode == 40) {
+				e.preventDefault();
+			}
 			Input._justPressedKeys.set(e.key, true);
 			Input._pressedKeys.set(e.key, true);
 			Input.onKeyPressed && Input.onKeyPressed();
