@@ -92,7 +92,7 @@ export class Level {
 			new Wall(0, 16 * TILE_SIZE, 16 * TILE_SIZE, TILE_SIZE)
 		);
 		const products = [];
-		products.push(new Product(BANKER_TILE_X * TILE_SIZE, 256, 3, 5));
+		products.push(new Product(BANKER_TILE_X * TILE_SIZE, 256, 3, 4));
 		const [startX, startY] = [256, 512 - TILE_SIZE];
 
 		return new Level(16, 16, walls, [], products, startX, startY, true);
