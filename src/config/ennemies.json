@@ -1,0 +1,50 @@
+{
+	"crosser": {
+		"name": "crosser",
+		"health": 3,
+		"acceleration": 5,
+		"friction": 0.99,
+		"maxSpeed": 4,
+		"shotVelocity": 10,
+		"fireRate": 1000,
+		"moveDelay": 1000,
+		"moveOdds": 0.5,
+		"lootOdds": 0.8,
+		"lootNumber": 1,
+		"shotType": "CROSS",
+		"width": 48,
+		"height": 48
+	},
+	"diagCrosser": {
+		"name": "diagcrosser",
+		"health": 3,
+		"acceleration": 5,
+		"friction": 0.99,
+		"maxSpeed": 4,
+		"shotVelocity": 6,
+		"fireRate": 1500,
+		"moveDelay": 1000,
+		"moveOdds": 0.5,
+		"lootOdds": 0.2,
+		"lootNumber": 1,
+		"shotType": "DIAGCROSS",
+		"width": 48,
+		"height": 48
+	},
+	"boss": {
+		"name": "boss",
+		"health": 10,
+		"acceleration": 1,
+		"friction": 0.99,
+		"maxSpeed": 1,
+		"shotVelocity": 6,
+		"fireRate": 700,
+		"moveDelay": 200,
+		"moveOdds": 0.8,
+		"lootOdds": 1,
+		"lootNumber": 3,
+		"shotType": "AIM",
+		"width": 128,
+		"height": 128
+	}
+}

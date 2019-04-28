@@ -1,0 +1,36 @@
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Blood Debt</title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				font-family: "Press Start 2P";
+			}
+			#hud {
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
+		</style>
+		<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+		<script>
+			WebFont.load({
+				google: {
+					families: ["Press Start 2P"],
+				},
+			});
+		</script>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.5.1/pixi.min.js"></script>
+	</head>
+	<body>
+		<div id="canvas">
+			<div id="hud"></div>
+		</div>
+		<script src="index.ts"></script>
+	</body>
+</html>
